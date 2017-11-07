@@ -11,9 +11,9 @@ name := "OpenSoC"
 scalaVersion := "2.10.4"
 
 // Chisel compiler location
-addSbtPlugin("com.github.scct" % "sbt-scct" % "0.2")
+//addSbtPlugin("com.github.scct" % "sbt-scct" % "0.2")
 
 // Version of Chisel being used
-//libraryDependencies += "edu.berkeley.cs" %% "chisel" % "latest.release"
-libraryDependencies += "edu.berkeley.cs" %% "chisel" % "2.2.27"
+libraryDependencies += "edu.berkeley.cs" %% "chisel" % "latest.release"
+//libraryDependencies += "edu.berkeley.cs" %% "chisel" % "2.2.27"
 

@@ -74,7 +74,7 @@ plt.figure(2)
 latAx = plt.subplot(111)
 numBins = 20
 print "min, max: ", latencyData.T[1].min(), latencyData.T[1].max()
-latAx.hist(latencyData.T[1], numBins, range=(latencyData.T[1].min()+1, latencyData.T[1].max()),color='g', alpha=0.8) 
+latAx.hist(latencyData.T[1], numBins, range=(latencyData.T[1].min()+1, latencyData.T[1].max()),color='g', alpha=0.8)
 latAx.set_xlabel('Latency (clocks) ')
 latAx.set_title('Latency per head flit')
 
@@ -96,13 +96,14 @@ for fig in range (routerCount / 4):
 		channelAx.set_ylabel('Utilization (%) ')
 		channelAx.set_title('% Time Channel is Busy')
 		channelAx.set_xticks(chInd+chWidth)
- 
+
 		channelAx.set_xticklabels(["r:" + str(fig*4+sp) + "c:" + str(c) for c in range(channelPerRouter)])
 
 
 		autolabel(chRects, channelAx)
 
 
+plt.tight_layout()
 plt.show()
 
 routerUtilFile.close()
