@@ -60,7 +60,7 @@ rects1 = ax.bar(ind, routerAvgUtil, width, color='r', yerr=routerStdDev)
 # add some text for labels, title and axes ticks
 ax.set_ylabel('Utilization (%) ')
 ax.set_title('% Time Router is Busy')
-ax.set_xticks(ind+width)
+ax.set_xticks(ind)
 ax.set_xticklabels( ["Router " + str(x) for x in range(routerCount)] )
 
 #ax.legend( (rects1[0]), ('Router!') )

@@ -1,35 +1,30 @@
 package OpenSoC
 
 import Chisel._
-/*
 class AXI4Lite32 extends Bundle {
-	// AXI Global Signals
-	val ACLK =		Bool(INPUT)
-	val ARESETn =	Bool(INPUT)
-	
 	// AXI Write Address Channel Signals
 	val AWVALID =	Bool(INPUT)
 	val AWREADY =	Bool(OUTPUT)
 	val AWADDR =	UInt(INPUT, 32)
 	val AWPROT =	UInt(INPUT, 3)
-	
+
 	// AXI Write Data Channel Signals
 	val WVALID =	Bool(INPUT)
 	val WREADY =	Bool(OUTPUT)
 	val WDATA =		UInt(INPUT, 32)
 	val WSTRB =		Bool(INPUT)
-	
+
 	// AXI Write Response Channel Signals
 	val BVALID =	Bool(INPUT)
 	val BREADY =	Bool(INPUT)
 	val BRESP =		Bool(OUTPUT)
-	
+
 	// AXI Read Address Channel Signals
 	val ARVALID =	Bool(INPUT)
 	val ARREADY =	Bool(OUTPUT)
 	val ARADDR =	UInt(INPUT, 32)
 	val ARPROT =	UInt(INPUT, 3)
-	
+
 	// AXI Read Data Channel Signals
 	val RVALID =	Bool(OUTPUT)
 	val RREADY =	Bool(INPUT)
@@ -37,11 +32,13 @@ class AXI4Lite32 extends Bundle {
 	val RRESP =		Bool(OUTPUT)
 }
 
+/*
+
 abstract class AXI extends Bundle {
 	// AXI Global Signals
 	val ACLK =		Bool(INPUT)
 	val ARESETn =	Bool(INPUT)
-	
+
 	// AXI Write Address Channel Signals
 	val AWID	i
 	val AWADDR	i
@@ -57,7 +54,7 @@ abstract class AXI extends Bundle {
 	val AWUSER	i
 	val AWVALID	i
 	val AWREADY	o
-	
+
 	// AXI Write Data Channel Signals
 	val WID		i
 	val WDATA	i
@@ -66,14 +63,14 @@ abstract class AXI extends Bundle {
 	val WUSER	i
 	val WVALID	i
 	val WREADY	o
-	
+
 	// AXI Write Response Channel Signals
 	val BID	o
 	val BRESP	o
 	val BUSER	o
 	val BVALID	o
 	val BREADY	i
-	
+
 	// AXI Read Address Channel Signals
 	val ARID	i
 	val ARADDR	i
@@ -88,7 +85,7 @@ abstract class AXI extends Bundle {
 	val ARUSER	i
 	val ARVALID	i
 	val ARREADY	o
-	
+
 	// AXI Read Data Channel Signals
 	val RID	o
 	val RDATA	o
@@ -97,7 +94,7 @@ abstract class AXI extends Bundle {
 	val RUSER	o
 	val RVALID	o
 	val RREADY	i
-	
+
 	// AXI Low-Power Interface Signals
 	val CSYSREQ	i
 	val CSYSACK	o
