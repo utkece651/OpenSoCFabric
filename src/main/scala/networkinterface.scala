@@ -61,6 +61,8 @@ class AXINetworkInterface(parms: Parameters) extends NetworkInterface(parms) {
     val creditCon = Chisel.Module ( new CreditCon( parms.child("MyCon", Map(
         ("numCreds"->Soft(queueDepth))))) )
 
+    val r_queue = Chisel.Module ( new Chisel.Queue( new Flit(parms), queueDepth) )
+
     val flitWidth = Flit.fromBits(UInt(0), parms).getWidth()
 
     // Converters from Head/Body to Flit
@@ -97,10 +99,15 @@ class AXINetworkInterface(parms: Parameters) extends NetworkInterface(parms) {
     bodyBundle2Flit.io.inBody := new BodyFlit(parms).fromBits(UInt(0))
     flitOut.valid             := Bool(false)
     flitOut.bits              := new Flit(parms).fromBits(UInt(0))
-    io.in.credit.grant := Bool(false)
+    r_queue.io.deq.ready := Bool(false)
     // *********************** </default outputs> ******************************
 
     // ************************* <flit reading> ********************************
+    r_queue.io.enq.valid := io.in.flitValid
+    r_queue.io.enq.bits := io.in.flit
+    io.in.credit.grant := r_queue.io.deq.valid && r_queue.io.deq.ready
+
+
     val readValidReg = Reg(init=Bool(false))
     when ( !readValidReg ) { readValidReg := io.AXI.ARVALID }
     .otherwise { readValidReg := ~io.AXI.RREADY }
@@ -109,9 +116,9 @@ class AXINetworkInterface(parms: Parameters) extends NetworkInterface(parms) {
     io.AXI.RDATA   := UInt(0)
     val readAddrReg = Reg(init = UInt(0, 32))
     when (io.AXI.ARVALID) { readAddrReg := io.AXI.ARADDR }
-    io.AXI.RDATA   := Mux(readAddrReg(0), io.in.flit.asBody().payload, UInt(io.in.flitValid && io.in.flit.isBody()))
-    io.AXI.RRESP   := Mux((io.in.flitValid && io.in.flit.isBody()) || ~Bool(readAddrReg(0)), AXI4Parameters.RESP_OKAY, AXI4Parameters.RESP_SLVERR)
-    when ((io.AXI.RVALID && io.in.flitValid && io.AXI.RREADY && readAddrReg(0)) || (io.in.flitValid && io.in.flit.isHead())) { io.in.credit.grant := Bool(true) }
+    io.AXI.RDATA   := Mux(readAddrReg(0), r_queue.io.deq.bits.asBody().payload, UInt(r_queue.io.deq.valid && r_queue.io.deq.bits.isBody()))
+    io.AXI.RRESP   := Mux((r_queue.io.deq.valid && r_queue.io.deq.bits.isBody()) || ~Bool(readAddrReg(0)), AXI4Parameters.RESP_OKAY, AXI4Parameters.RESP_SLVERR)
+    when ((io.AXI.RVALID && r_queue.io.deq.valid && io.AXI.RREADY && readAddrReg(0)) || (r_queue.io.deq.valid && r_queue.io.deq.bits.isHead())) { r_queue.io.deq.ready := Bool(true) }
     // ************************* </flit reading> *******************************
 
     // ************************** <write flit> *********************************
@@ -319,6 +326,8 @@ class AXINetworkInterfaceReadTest(c: AXINetworkInterface) extends Tester(c) {
     poke (c.io.in.flit.x, 0x04000000014L)
     poke (c.io.in.flitValid, 1)
     step(1)
+    poke (c.io.in.flitValid, 0)
+    step(1)
 
     // Read to see if packet availible (Packet should be availible)
     println("Read Packet Avalibility (Avalible)")
@@ -347,8 +356,6 @@ class AXINetworkInterfaceReadTest(c: AXINetworkInterface) extends Tester(c) {
     expect(c.io.AXI.RDATA, 10)
     expect(c.io.AXI.RRESP, 0)
     expect(c.io.in.credit.grant, 1)
-    step(1)
-    poke (c.io.in.flitValid, 0)
     step(1)
     expect(c.io.AXI.RVALID, 0)
     step(1)

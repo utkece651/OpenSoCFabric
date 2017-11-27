@@ -577,7 +577,7 @@ class OpenSoC_CMesh_AXI_CombinedTester_VarInjRate(c: OpenSoC_CMesh_AXI, parms: P
     poke (c.io.AXI(0).WVALID, 1)
     step(1) // 2
     expect(c.io.AXI(0).WREADY, 0)
-    poke (c.io.AXI(0).AWADDR, 0)
+    poke (c.io.AXI(0).AWADDR, 0x1000000)
     poke (c.io.AXI(0).AWVALID, 1)
     step(1) // 3
     expect(c.io.AXI(0).AWREADY, 1)
@@ -592,9 +592,9 @@ class OpenSoC_CMesh_AXI_CombinedTester_VarInjRate(c: OpenSoC_CMesh_AXI, parms: P
     expect(c.io.AXI(0).BVALID, 1)
     step(1) // 6
     expect(c.io.AXI(0).BRESP, 0)
-    step(100)
+    step(10)
 
-    // Read to see if packet availible (Packet should be availible)
+    // Read to see if packet availible (Packet should be unavailible)
     println("Read Packet Avalibility AXI(0) (Avalible)")
     expect(c.io.AXI(0).ARREADY, 1)
     poke (c.io.AXI(0).ARADDR, 0)
@@ -603,13 +603,13 @@ class OpenSoC_CMesh_AXI_CombinedTester_VarInjRate(c: OpenSoC_CMesh_AXI, parms: P
     poke (c.io.AXI(0).ARVALID, 0)
     expect(c.io.AXI(0).ARREADY, 1)
     expect(c.io.AXI(0).RVALID, 1)
-    expect(c.io.AXI(0).RDATA, 1)
+    expect(c.io.AXI(0).RDATA, 0)
     expect(c.io.AXI(0).RRESP, 0)
     step(1)
     poke(c.io.AXI(0).RREADY, 1)
     step(1)
 
-    // Read to see if packet availible (Packet should be availible)
+    // Read to see if packet availible (Packet should be unavailible)
     println("Read Packet Avalibility AXI(1) (Avalible)")
     expect(c.io.AXI(1).ARREADY, 1)
     poke (c.io.AXI(1).ARADDR, 0)
@@ -618,7 +618,7 @@ class OpenSoC_CMesh_AXI_CombinedTester_VarInjRate(c: OpenSoC_CMesh_AXI, parms: P
     poke (c.io.AXI(1).ARVALID, 0)
     expect(c.io.AXI(1).ARREADY, 1)
     expect(c.io.AXI(1).RVALID, 1)
-    expect(c.io.AXI(1).RDATA, 1)
+    expect(c.io.AXI(1).RDATA, 0)
     expect(c.io.AXI(1).RRESP, 0)
     step(1)
     poke(c.io.AXI(1).RREADY, 1)
@@ -639,7 +639,7 @@ class OpenSoC_CMesh_AXI_CombinedTester_VarInjRate(c: OpenSoC_CMesh_AXI, parms: P
     poke(c.io.AXI(2).RREADY, 1)
     step(1)
 
-    // Read to see if packet availible (Packet should be availible)
+    // Read to see if packet availible (Packet should be unavailible)
     println("Read Packet Avalibility AXI(3) (Avalible)")
     expect(c.io.AXI(3).ARREADY, 1)
     poke (c.io.AXI(3).ARADDR, 0)
@@ -648,7 +648,7 @@ class OpenSoC_CMesh_AXI_CombinedTester_VarInjRate(c: OpenSoC_CMesh_AXI, parms: P
     poke (c.io.AXI(3).ARVALID, 0)
     expect(c.io.AXI(3).ARREADY, 1)
     expect(c.io.AXI(3).RVALID, 1)
-    expect(c.io.AXI(3).RDATA, 1)
+    expect(c.io.AXI(3).RDATA, 0)
     expect(c.io.AXI(3).RRESP, 0)
     step(1)
     poke(c.io.AXI(3).RREADY, 1)
