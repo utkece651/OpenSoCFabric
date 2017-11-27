@@ -61,7 +61,7 @@ class AXI4Lite32 extends Bundle {
     val RVALID =    Bool(OUTPUT)
     val RREADY =    Bool(INPUT)
     val RDATA =     UInt(OUTPUT, 32)
-    val RRESP =     Bool(OUTPUT)
+    val RRESP =     UInt(OUTPUT, 2)
 }
 
 /*

@@ -83,6 +83,38 @@ class AXINetworkInterface(parms: Parameters) extends NetworkInterface(parms) {
     // Flit width must be equal to axi bus width.
     // assert(flitWidth == 32)
 
+    // *********************** <default outputs> *******************************
+    // Set default values
+    io.AXI.AWREADY := Bool(false)
+    io.AXI.WREADY  := Bool(false)
+    io.AXI.BRESP   := UInt(0)
+    io.AXI.BVALID  := Bool(false)
+    io.AXI.ARREADY := Bool(false)
+    io.AXI.RVALID  := Bool(false)
+    io.AXI.RDATA   := UInt(0, 32)
+    io.AXI.RRESP   := UInt(0)
+    headBundle2Flit.io.inHead := new HeadFlit(parms).fromBits(UInt(0))
+    bodyBundle2Flit.io.inBody := new BodyFlit(parms).fromBits(UInt(0))
+    flitOut.valid             := Bool(false)
+    flitOut.bits              := new Flit(parms).fromBits(UInt(0))
+    io.in.credit.grant := Bool(false)
+    // *********************** </default outputs> ******************************
+
+    // ************************* <flit reading> ********************************
+    val readValidReg = Reg(init=Bool(false))
+    when ( !readValidReg ) { readValidReg := io.AXI.ARVALID }
+    .otherwise { readValidReg := ~io.AXI.RREADY }
+    io.AXI.ARREADY := Bool(true)
+    io.AXI.RVALID  := readValidReg
+    io.AXI.RDATA   := UInt(0)
+    val readAddrReg = Reg(init = UInt(0, 32))
+    when (io.AXI.ARVALID) { readAddrReg := io.AXI.ARADDR }
+    io.AXI.RDATA   := Mux(readAddrReg(0), io.in.flit.asBody().payload, UInt(io.in.flitValid && io.in.flit.isBody()))
+    io.AXI.RRESP   := Mux((io.in.flitValid && io.in.flit.isBody()) || ~Bool(readAddrReg(0)), AXI4Parameters.RESP_OKAY, AXI4Parameters.RESP_SLVERR)
+    when ((io.AXI.RVALID && io.in.flitValid && io.AXI.RREADY && readAddrReg(0)) || (io.in.flitValid && io.in.flit.isHead())) { io.in.credit.grant := Bool(true) }
+    // ************************* </flit reading> *******************************
+
+    // ************************** <write flit> *********************************
     when( sw_state === sw_idle ) {
         when (io.AXI.AWVALID) { sw_state := sw_createHeadFlit }
         .otherwise            { sw_state := sw_idle }
@@ -90,10 +122,6 @@ class AXINetworkInterface(parms: Parameters) extends NetworkInterface(parms) {
         io.AXI.WREADY             := Bool(false)
         io.AXI.BRESP              := UInt(0)
         io.AXI.BVALID             := Bool(false)
-        io.AXI.ARREADY            := Bool(false)
-        io.AXI.RVALID             := Bool(false)
-        io.AXI.RDATA              := UInt(0, 32)
-        io.AXI.RRESP              := Bool(false)
         flitOut.valid             := Bool(false)
         flitOut.bits              := new Flit(parms).fromBits(UInt(0))
         headBundle2Flit.io.inHead := new HeadFlit(parms).fromBits(UInt(0))
@@ -110,10 +138,6 @@ class AXINetworkInterface(parms: Parameters) extends NetworkInterface(parms) {
         io.AXI.WREADY               := Bool(false)
         io.AXI.BRESP                := UInt(0)
         io.AXI.BVALID               := Bool(false)
-        io.AXI.ARREADY              := Bool(false)
-        io.AXI.RVALID               := Bool(false)
-        io.AXI.RDATA                := UInt(0, 32)
-        io.AXI.RRESP                := Bool(false)
 
     }.elsewhen( sw_state === sw_waitForData ) {
         when (io.AXI.WVALID)  { sw_state := sw_createBodyFlit }
@@ -122,10 +146,6 @@ class AXINetworkInterface(parms: Parameters) extends NetworkInterface(parms) {
         io.AXI.WREADY             := Bool(false)
         io.AXI.BRESP              := UInt(0)
         io.AXI.BVALID             := Bool(false)
-        io.AXI.ARREADY            := Bool(false)
-        io.AXI.RVALID             := Bool(false)
-        io.AXI.RDATA              := UInt(0, 32)
-        io.AXI.RRESP              := Bool(false)
         flitOut.valid             := Bool(false)
         flitOut.bits              := new Flit(parms).fromBits(UInt(0))
         headBundle2Flit.io.inHead := new HeadFlit(parms).fromBits(UInt(0))
@@ -142,10 +162,6 @@ class AXINetworkInterface(parms: Parameters) extends NetworkInterface(parms) {
         io.AXI.AWREADY              := Bool(false)
         io.AXI.BRESP                := UInt(0)
         io.AXI.BVALID               := Bool(false)
-        io.AXI.ARREADY              := Bool(false)
-        io.AXI.RVALID               := Bool(false)
-        io.AXI.RDATA                := UInt(0, 32)
-        io.AXI.RRESP                := Bool(false)
 
     }.elsewhen( sw_state === sw_sendResponse ) {
         when (io.AXI.BREADY) { sw_state := sw_idle         }
@@ -155,32 +171,16 @@ class AXINetworkInterface(parms: Parameters) extends NetworkInterface(parms) {
 
         io.AXI.AWREADY            := Bool(false)
         io.AXI.WREADY             := Bool(false)
-        io.AXI.ARREADY            := Bool(false)
-        io.AXI.RVALID             := Bool(false)
-        io.AXI.RDATA              := UInt(0, 32)
-        io.AXI.RRESP              := Bool(false)
         flitOut.valid             := Bool(false)
         flitOut.bits              := new Flit(parms).fromBits(UInt(0))
         headBundle2Flit.io.inHead := new HeadFlit(parms).fromBits(UInt(0))
         bodyBundle2Flit.io.inBody := new BodyFlit(parms).fromBits(UInt(0))
 
-    }.otherwise{
-        // Set default values
-        io.AXI.AWREADY := Bool(false)
-        io.AXI.WREADY  := Bool(false)
-        io.AXI.BRESP   := Bool(false)
-        io.AXI.BVALID  := Bool(false)
-        io.AXI.ARREADY := Bool(false)
-        io.AXI.RVALID  := Bool(false)
-        io.AXI.RDATA   := UInt(0, 32)
-        io.AXI.RRESP   := Bool(false)
-        headBundle2Flit.io.inHead := new HeadFlit(parms).fromBits(UInt(0))
-        bodyBundle2Flit.io.inBody := new BodyFlit(parms).fromBits(UInt(0))
-        flitOut.valid             := Bool(false)
-        flitOut.bits              := new Flit(parms).fromBits(UInt(0))
     }
+    // ************************** </write flit> ********************************
 
 
+    // *********************** <helper functions> ******************************
     def CreateHeadFlit(destAddress : UInt, packetID : UInt, parms : Parameters) : Flit =  {
         val offset          = 16
         headBundle2Flit.io.inHead.isTail        := Bool(false)
@@ -206,9 +206,10 @@ class AXINetworkInterface(parms: Parameters) extends NetworkInterface(parms) {
         val flit = bodyBundle2Flit.io.outFlit
         flit
     }
+    // *********************** </helper functions> *****************************
 }
 
-class AXINetworkInterfaceTest(c: AXINetworkInterface) extends Tester(c) {
+class AXINetworkInterfaceWriteTest(c: AXINetworkInterface) extends Tester(c) {
     poke (c.io.AXI.AWVALID, 0)
     poke (c.io.AXI.AWADDR, 0)
     poke (c.io.AXI.AWPROT, 0)
@@ -249,10 +250,145 @@ class AXINetworkInterfaceTest(c: AXINetworkInterface) extends Tester(c) {
     step(1) // 6
     expect(c.io.AXI.BRESP, 0)
     step(10)
+}
 
-    // Write Address
+class AXINetworkInterfaceReadTest(c: AXINetworkInterface) extends Tester(c) {
+    poke (c.io.AXI.AWVALID, 0)
+    poke (c.io.AXI.AWADDR, 0)
+    poke (c.io.AXI.AWPROT, 0)
+    poke (c.io.AXI.WVALID, 0)
+    poke (c.io.AXI.WDATA, 0)
+    poke (c.io.AXI.WSTRB, 0)
+    poke (c.io.AXI.BREADY, 0)
+    poke (c.io.AXI.ARVALID, 0)
+    poke (c.io.AXI.ARADDR, 0)
+    poke (c.io.AXI.ARPROT, 0)
+    poke (c.io.AXI.RREADY, 0)
+    poke (c.io.out.credit.grant, 0)
+    poke (c.io.in.flit.x, 0)
+    poke (c.io.in.flitValid, 0)
+    reset(1)
+    step(1) // 1
 
-    // Expect Output
+    // Read to see if packet availible (Packet should be unavailible)
+    println("Read Packet Avalibility (Unavalible)")
+    expect(c.io.AXI.ARREADY, 1)
+    poke (c.io.AXI.ARADDR, 0)
+    poke (c.io.AXI.ARVALID, 1)
+    step(1)
+    poke (c.io.AXI.ARVALID, 0)
+    expect(c.io.AXI.ARREADY, 1)
+    step(1)
+    expect(c.io.AXI.RVALID, 1)
+    expect(c.io.AXI.RDATA, 0)
+    expect(c.io.AXI.RRESP, 0)
+    poke(c.io.AXI.RREADY, 1)
+    step(1)
+    expect(c.io.AXI.RVALID, 0)
+    step(1)
 
+    // Add head flit
+    println("Add Head Flit")
+    poke (c.io.in.flit.x, 1)
+    poke (c.io.in.flitValid, 1)
+    step(1)
+    expect(c.io.in.credit.grant, 1)
+    poke (c.io.in.flitValid, 0)
+    step(1)
+
+    // Read to see if packet availible (Packet should be unavailible)
+    println("Read Packet Avalibility (Unavalible)")
+    expect(c.io.AXI.ARREADY, 1)
+    poke (c.io.AXI.ARADDR, 0)
+    poke (c.io.AXI.ARVALID, 1)
+    step(1)
+    poke (c.io.AXI.ARVALID, 0)
+    expect(c.io.AXI.ARREADY, 1)
+    expect(c.io.AXI.RVALID, 1)
+    expect(c.io.AXI.RDATA, 0)
+    expect(c.io.AXI.RRESP, 0)
+    expect(c.io.in.credit.grant, 0)
+    step(1)
+    poke(c.io.AXI.RREADY, 1)
+    step(1)
+    expect(c.io.AXI.RVALID, 0)
+    step(1)
+
+    // Add Body flit
+    println("Add Body Flit")
+    poke (c.io.in.flit.x, 0x04000000014L)
+    poke (c.io.in.flitValid, 1)
+    step(1)
+
+    // Read to see if packet availible (Packet should be availible)
+    println("Read Packet Avalibility (Avalible)")
+    expect(c.io.AXI.ARREADY, 1)
+    poke (c.io.AXI.ARADDR, 0)
+    poke (c.io.AXI.ARVALID, 1)
+    step(1)
+    poke (c.io.AXI.ARVALID, 0)
+    expect(c.io.AXI.ARREADY, 1)
+    expect(c.io.AXI.RVALID, 1)
+    expect(c.io.AXI.RDATA, 1)
+    expect(c.io.AXI.RRESP, 0)
+    step(1)
+    poke(c.io.AXI.RREADY, 1)
+    step(1)
+
+    // Read packet
+    println("Read Packet")
+    expect(c.io.AXI.ARREADY, 1)
+    poke (c.io.AXI.ARADDR, 1)
+    poke (c.io.AXI.ARVALID, 1)
+    step(1)
+    poke (c.io.AXI.ARVALID, 0)
+    expect(c.io.AXI.ARREADY, 1)
+    expect(c.io.AXI.RVALID, 1)
+    expect(c.io.AXI.RDATA, 10)
+    expect(c.io.AXI.RRESP, 0)
+    expect(c.io.in.credit.grant, 1)
+    step(1)
+    poke (c.io.in.flitValid, 0)
+    step(1)
+    expect(c.io.AXI.RVALID, 0)
+    step(1)
+    poke(c.io.AXI.RREADY, 1)
+    step(1)
+    expect(c.io.AXI.RVALID, 0)
+    step(1)
+
+    // Read invalid packet
+    println("Read Invalid Packet")
+    expect(c.io.AXI.ARREADY, 1)
+    poke (c.io.AXI.ARADDR, 1)
+    poke (c.io.AXI.ARVALID, 1)
+    step(1)
+    poke (c.io.AXI.ARVALID, 0)
+    expect(c.io.AXI.ARREADY, 1)
+    expect(c.io.AXI.RVALID, 1)
+    expect(c.io.AXI.RRESP, 2)
+    step(1)
+    poke(c.io.AXI.RREADY, 1)
+    step(1)
+    expect(c.io.AXI.RVALID, 0)
+    step(1)
+
+    // Read to see if packet availible (Packet should be unavailible)
+    println("Read Packet Avalibility (Unavalible)")
+    expect(c.io.AXI.ARREADY, 1)
+    poke (c.io.AXI.ARADDR, 0)
+    poke (c.io.AXI.ARVALID, 1)
+    step(1)
+    poke (c.io.AXI.ARVALID, 0)
+    expect(c.io.AXI.ARREADY, 1)
+    expect(c.io.AXI.RVALID, 1)
+    expect(c.io.AXI.RDATA, 0)
+    expect(c.io.AXI.RRESP, 0)
+    expect(c.io.in.credit.grant, 0)
+    step(1)
+    poke(c.io.AXI.RREADY, 1)
+    step(1)
+    expect(c.io.AXI.RVALID, 0)
+    step(1)
 }
 /* vim: set shiftwidth=4 tabstop=4 softtabstop=4 expandtab: */
