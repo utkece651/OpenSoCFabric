@@ -401,6 +401,32 @@ object OpenSoC {
                                                         )
                                                     ), (p)=>new Packet(p))
                                                 ))
+            case "OpenSoC_CMesh_AXI"    => (moduleToTest = () => Module(new OpenSoC_CMesh_AXI(
+                                                    parms.child("MyOpenSoC_CMesh", Map(
+                                                        ("TopologyDimension"->Hard(Dim)),
+                                                        ("RoutersPerDim"->Hard(K)),
+                                                        ("Concentration"->Hard(C)),
+                                                        ("numVCs"->Hard(numVCs)),
+                                                        ("credThreshold"->Hard(1)),
+
+                                                        ("queueDepth"->Soft(16)),
+
+                                                        ("packetIDWidth"->Hard(16)),
+                                                        ("packetMaxLength"->Hard(16)),
+                                                        ("packetWidth"->Hard(32)),
+
+                                                        ("packetTypeWidth"->Hard(4)),
+                                                        ("destCordWidth"->Hard(Math.max(log2Up(K.max),log2Up(C)))),
+                                                        ("destCordDim"->Hard(Dim + C)),
+
+                                                        ("flitIDWidth"->Hard(4)),
+                                                        ("payloadWidth"->Hard(32)),
+                                                        ("InputFlitizer"->Soft((parms: Parameters) => new PacketToFlit(parms))),
+
+                                                        ("numPriorityLevels"->Hard(5))
+                                                        )
+                                                    ))
+                                                ))
             case "OpenSoC_CMesh_Flit"   => (moduleToTest = () => Module(new OpenSoC_CMesh[Flit](
                                                     parms.child("MyOpenSoC_CMesh", Map(
                                                         ("TopologyDimension"->Hard(Dim)),
@@ -504,6 +530,7 @@ object OpenSoC {
             case "SimpleRouterTester"                        => ( chiselMainTest(myargs, moduleToTest) { c => new SimpleRouterTester(c.asInstanceOf[SimpleRouterTestWrapper]) } )
             case "OpenSoC_CFlatBtflyTester_Random"           => ( chiselMainTest(myargs, moduleToTest) { c => new OpenSoC_CFlatBtflyTester_Random(c.asInstanceOf[OpenSoC_CFlatBfly[Flit]], parms) } )
             case "OpenSoC_CMeshTester_Random_VarInjRate"     => ( chiselMainTest(myargs, moduleToTest) { c => new OpenSoC_CMesh_CombinedTester_VarInjRate(c.asInstanceOf[OpenSoC_CMesh[Flit]], parms, injRate, "Random", packetCount, fragmentationFactor) } )
+            case "OpenSoC_CMesh_AXI_Tester_Random_VarInjRate"     => ( chiselMainTest(myargs, moduleToTest) { c => new OpenSoC_CMesh_AXI_CombinedTester_VarInjRate(c.asInstanceOf[OpenSoC_CMesh_AXI], parms, injRate, "Random", packetCount, fragmentationFactor) } )
             case "OpenSoC_CMesh_NeighborTester_VarInjRate"   => ( chiselMainTest(myargs, moduleToTest) { c => new OpenSoC_CMesh_CombinedTester_VarInjRate(c.asInstanceOf[OpenSoC_CMesh[Flit]], parms, injRate, "Neighbor", packetCount, fragmentationFactor) } )
             case "OpenSoC_CMesh_TornadoTester_VarInjRate"    => ( chiselMainTest(myargs, moduleToTest) { c => new OpenSoC_CMesh_CombinedTester_VarInjRate(c.asInstanceOf[OpenSoC_CMesh[Flit]], parms, injRate, "Tornado", packetCount, fragmentationFactor) } )
             case "OpenSoC_CMesh_BitReverseTester_VarInjRate" => ( chiselMainTest(myargs, moduleToTest) { c => new OpenSoC_CMesh_CombinedTester_VarInjRate(c.asInstanceOf[OpenSoC_CMesh[Flit]], parms, injRate, "BitReverse", packetCount, fragmentationFactor) } )

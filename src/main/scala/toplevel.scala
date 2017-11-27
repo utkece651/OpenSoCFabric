@@ -184,6 +184,122 @@ class OpenSoC_CMesh[T<: Data](parms: Parameters, tGen : Parameters => T) extends
         }
 }
 
+class OpenSoC_CMesh_AXI(parms: Parameters) extends Module(parms) {
+    val Dim = parms.get[Int]("TopologyDimension") // Dimension of topology
+    val K = parms.get[Vector[Int]]("RoutersPerDim") // Routers per dimension.
+    val C = parms.get[Int]("Concentration") // Processors (endpoints) per router.
+    val numRouters : Int = K.product //Math.pow(K, Dim).toInt
+    val numPorts = numRouters * C// K.product//(Math.pow(K,Dim)*C).toInt // K^Dim = numRouters, numRouters*C = numPorts
+    val queueDepth = parms.get[Int]("queueDepth")
+    val numVCs = parms.get[Int]("numVCs")
+    val routerRadix = 2 * Dim + C
+    val counterMax = UInt(32768)
+
+
+    val io = new Bundle {
+        val AXI                 = Vec.fill(numPorts) { new AXI4Lite32()}
+        // val ports               = Vec.fill(numPorts) { new OpenSoCFlitChannelPort(parms)}
+        // val headFlitsIn         = Vec.fill(numPorts) { new HeadFlit(parms).asInput }
+        // val headFlitsOut        = Vec.fill(numPorts) { new Flit(parms).asOutput }
+        // val bodyFlitsIn         = Vec.fill(numPorts) { new BodyFlit(parms).asInput }
+        // val bodyFlitsOut        = Vec.fill(numPorts) { new Flit(parms).asOutput }
+        // val flitsIn             = Vec.fill(numPorts) { new Flit(parms).asInput }
+        // val flitsOutAsHead      = Vec.fill(numPorts) { new HeadFlit(parms).asOutput }
+        // val flitsOutAsBody      = Vec.fill(numPorts) { new BodyFlit(parms).asOutput }
+        // val portsAsHeadFlits    = Vec.fill(numPorts) { new HeadFlit(parms).asOutput }
+        // val portsAsBodyFlits    = Vec.fill(numPorts) { new BodyFlit(parms).asOutput }
+
+        val cyclesRouterBusy    = Vec.fill(numRouters){ UInt(OUTPUT, width=counterMax.getWidth)}
+        val cyclesChannelBusy   = Vec.fill(numRouters*routerRadix){UInt(OUTPUT, width=counterMax.getWidth)}
+    }
+
+
+    // for (port <- 0 until numPorts){
+    //     var headExtracter           = Chisel.Module( new HeadBundle2Flit(parms) )
+    //     var bodyExtracter           = Chisel.Module( new BodyBundle2Flit(parms) )
+    //     var flit2flit               = Chisel.Module( new Flit2FlitBundle(parms) )
+    //     var flitTranslate           = Chisel.Module( new Flit2FlitBundle(parms) )
+    //     io.headFlitsIn(port)        <>  headExtracter.io.inHead
+    //     io.headFlitsOut(port)       <>  headExtracter.io.outFlit
+    //     io.bodyFlitsIn(port)        <>  bodyExtracter.io.inBody
+    //     io.bodyFlitsOut(port)       <>  bodyExtracter.io.outFlit
+    //     io.flitsIn(port)            <>  flit2flit.io.inFlit
+    //     io.flitsOutAsHead(port)     <>  flit2flit.io.outHead
+    //     io.flitsOutAsBody(port)     <>  flit2flit.io.outBody
+    //     flitTranslate.io.inFlit :=      io.ports(port).out.flit
+    //     io.portsAsHeadFlits(port)   <>  flitTranslate.io.outHead
+    //     io.portsAsBodyFlits(port)   <>  flitTranslate.io.outBody
+    // }
+
+    println("numVCs: " + numVCs)
+
+    if (numVCs < 2) {
+        println("In Wormhole Mode")
+        println("------------------")
+        val topology = Chisel.Module(
+            new CMesh(parms.child("CMeshTopo", Map(
+                ("topoInCredits"->Soft(queueDepth)),
+                ("topoOutCredits"->Soft(queueDepth)),
+
+                ("rfCtor"->Soft((parms: Parameters) => new CMeshDOR(parms))),
+                ("routerCtor"->Soft((parms: Parameters) => new SimpleRouter(parms)))
+            ))))
+
+        for (i <- 0 until numPorts) {
+            val injectionQ = Chisel.Module( new GenericChannelQ(parms.child(("InjectionQ", i)))  )
+            val ejectionQ = Chisel.Module( new GenericChannelQ(parms.child(("EjectionQ", i))) )
+            val networkInterface = Chisel.Module( new AXINetworkInterface(parms) )
+
+            networkInterface.io.AXI <> io.AXI(i)
+
+            injectionQ.io.in <> networkInterface.io.out
+            networkInterface.io.in <> ejectionQ.io.out
+
+            topology.io.inChannels(i) <> injectionQ.io.out
+            ejectionQ.io.in <> topology.io.outChannels(i)
+        }
+        for (r <- 0 until numRouters) {
+            io.cyclesRouterBusy(r) := topology.io.cyclesRouterBusy(r)
+            for(c <- 0 until routerRadix) {
+                io.cyclesChannelBusy((r*routerRadix) + c) := topology.io.cyclesChannelBusy((r*routerRadix) + c)
+            }
+        }
+        } else {
+            println("In VC Mode")
+            println("------------------")
+            val topology = Chisel.Module(
+                new VCCMesh(parms.child("VCCMeshTopo", Map(
+                    ("topoInCredits"->Soft(queueDepth)),
+                    ("topoOutCredits"->Soft(queueDepth)),
+
+                    ("rfCtor"->Soft((parms: Parameters) => new CMeshDOR(parms))),
+                    ("routerCtor"->Soft((parms: Parameters) => new SimpleVCRouter(parms)))
+                ))))
+
+            for (i <- 0 until numPorts) {
+                val injectionQ = Chisel.Module( new InjectionChannelQ(parms.child(("InjectionQ", i), Map(
+                    ("vcArbCtor"->Soft((parms: Parameters) => new RRArbiter(parms)))
+                )) ) )
+                val ejectionQ = Chisel.Module( new EjectionChannelQ(parms.child(("EjectionQ", i))) )
+                val networkInterface = Chisel.Module( new AXINetworkInterface(parms) )
+
+                networkInterface.io.AXI <> io.AXI(i)
+
+                injectionQ.io.in <> networkInterface.io.out
+                networkInterface.io.in <> ejectionQ.io.out
+
+                topology.io.inChannels(i) <> injectionQ.io.out
+                ejectionQ.io.in <> topology.io.outChannels(i)
+            }
+            for (r <- 0 until numRouters) {
+                io.cyclesRouterBusy(r) := topology.io.cyclesRouterBusy(r)
+                for(c <- 0 until routerRadix) {
+                    io.cyclesChannelBusy((r*routerRadix) + c) := topology.io.cyclesChannelBusy((r*routerRadix) + c)
+                }
+            }
+        }
+}
+
 class OpenSoC_FlitChannel(parms : Parameters) extends Bundle{
     val flitIsHead  = Chisel.Bool()
     val headFlit    = new HeadFlit(parms)
