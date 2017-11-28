@@ -33,7 +33,7 @@ object AXI4Parameters
   def RESP_DECERR = UInt(3, width = respBits)
 }
 
-class AXI4Lite32 extends Bundle {
+class AXI4Lite32(parms: Parameters) extends Bundle {
     // AXI Write Address Channel Signals
     val AWVALID =   Bool(INPUT)
     val AWREADY =   Bool(OUTPUT)
@@ -43,7 +43,7 @@ class AXI4Lite32 extends Bundle {
     // AXI Write Data Channel Signals
     val WVALID =    Bool(INPUT)
     val WREADY =    Bool(OUTPUT)
-    val WDATA =     UInt(INPUT, 32)
+    val WDATA =     UInt(INPUT, parms.get[Int]("AXIDataWidth"))
     val WSTRB =     Bool(INPUT)
 
     // AXI Write Response Channel Signals
@@ -60,7 +60,7 @@ class AXI4Lite32 extends Bundle {
     // AXI Read Data Channel Signals
     val RVALID =    Bool(OUTPUT)
     val RREADY =    Bool(INPUT)
-    val RDATA =     UInt(OUTPUT, 32)
+    val RDATA =     UInt(OUTPUT, parms.get[Int]("AXIDataWidth"))
     val RRESP =     UInt(OUTPUT, 2)
 }
 

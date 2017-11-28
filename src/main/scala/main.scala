@@ -251,6 +251,7 @@ object OpenSoC {
                                                         ("packetIDWidth"->Hard(4)),
                                                         ("packetMaxLength"->Hard(16)),
                                                         ("packetWidth"->Hard(32)),
+                                                        ("AXIDataWidth"->Hard(32)),
 
                                                         ("packetTypeWidth"->Hard(4)),
                                                         // ("destCordWidth"->Hard(Math.max(log2Up(K.max),log2Up(C)))),
@@ -413,14 +414,15 @@ object OpenSoC {
 
                                                         ("packetIDWidth"->Hard(16)),
                                                         ("packetMaxLength"->Hard(16)),
-                                                        ("packetWidth"->Hard(32)),
+                                                        ("packetWidth"->Hard(64)),
+                                                        ("AXIDataWidth"->Hard(64)),
 
                                                         ("packetTypeWidth"->Hard(4)),
                                                         ("destCordWidth"->Hard(Math.max(log2Up(K.max),log2Up(C)))),
                                                         ("destCordDim"->Hard(Dim + C)),
 
                                                         ("flitIDWidth"->Hard(4)),
-                                                        ("payloadWidth"->Hard(32)),
+                                                        ("payloadWidth"->Hard(64)),
                                                         ("InputFlitizer"->Soft((parms: Parameters) => new PacketToFlit(parms))),
 
                                                         ("numPriorityLevels"->Hard(5))

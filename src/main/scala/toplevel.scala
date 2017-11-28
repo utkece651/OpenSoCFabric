@@ -197,39 +197,10 @@ class OpenSoC_CMesh_AXI(parms: Parameters) extends Module(parms) {
 
 
     val io = new Bundle {
-        val AXI                 = Vec.fill(numPorts) { new AXI4Lite32()}
-        // val ports               = Vec.fill(numPorts) { new OpenSoCFlitChannelPort(parms)}
-        // val headFlitsIn         = Vec.fill(numPorts) { new HeadFlit(parms).asInput }
-        // val headFlitsOut        = Vec.fill(numPorts) { new Flit(parms).asOutput }
-        // val bodyFlitsIn         = Vec.fill(numPorts) { new BodyFlit(parms).asInput }
-        // val bodyFlitsOut        = Vec.fill(numPorts) { new Flit(parms).asOutput }
-        // val flitsIn             = Vec.fill(numPorts) { new Flit(parms).asInput }
-        // val flitsOutAsHead      = Vec.fill(numPorts) { new HeadFlit(parms).asOutput }
-        // val flitsOutAsBody      = Vec.fill(numPorts) { new BodyFlit(parms).asOutput }
-        // val portsAsHeadFlits    = Vec.fill(numPorts) { new HeadFlit(parms).asOutput }
-        // val portsAsBodyFlits    = Vec.fill(numPorts) { new BodyFlit(parms).asOutput }
-
+        val AXI                 = Vec.fill(numPorts) { new AXI4Lite32(parms)}
         val cyclesRouterBusy    = Vec.fill(numRouters){ UInt(OUTPUT, width=counterMax.getWidth)}
         val cyclesChannelBusy   = Vec.fill(numRouters*routerRadix){UInt(OUTPUT, width=counterMax.getWidth)}
     }
-
-
-    // for (port <- 0 until numPorts){
-    //     var headExtracter           = Chisel.Module( new HeadBundle2Flit(parms) )
-    //     var bodyExtracter           = Chisel.Module( new BodyBundle2Flit(parms) )
-    //     var flit2flit               = Chisel.Module( new Flit2FlitBundle(parms) )
-    //     var flitTranslate           = Chisel.Module( new Flit2FlitBundle(parms) )
-    //     io.headFlitsIn(port)        <>  headExtracter.io.inHead
-    //     io.headFlitsOut(port)       <>  headExtracter.io.outFlit
-    //     io.bodyFlitsIn(port)        <>  bodyExtracter.io.inBody
-    //     io.bodyFlitsOut(port)       <>  bodyExtracter.io.outFlit
-    //     io.flitsIn(port)            <>  flit2flit.io.inFlit
-    //     io.flitsOutAsHead(port)     <>  flit2flit.io.outHead
-    //     io.flitsOutAsBody(port)     <>  flit2flit.io.outBody
-    //     flitTranslate.io.inFlit :=      io.ports(port).out.flit
-    //     io.portsAsHeadFlits(port)   <>  flitTranslate.io.outHead
-    //     io.portsAsBodyFlits(port)   <>  flitTranslate.io.outBody
-    // }
 
     println("numVCs: " + numVCs)
 

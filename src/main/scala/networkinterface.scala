@@ -11,7 +11,7 @@ abstract class NetworkInterfaceParams {
 
 abstract class NetworkInterface(parms: Parameters) extends Module(parms) {
     val io = new Bundle {
-        val AXI = new AXI4Lite32()
+        val AXI = new AXI4Lite32(parms)
         val out = new Channel(parms).flip()
         val in = new Channel(parms)
     }
@@ -234,14 +234,38 @@ class AXINetworkInterfaceWriteTest(c: AXINetworkInterface) extends Tester(c) {
     reset(1)
     step(1) // 1
 
-    // Write Data
+    // Write Data, Addr First
+    println("Write Data, Addr First")
+    poke (c.io.AXI.AWADDR, 0x10000)
+    poke (c.io.AXI.AWVALID, 1)
+    step(1) // 3
+    poke (c.io.AXI.WDATA, 20)
+    poke (c.io.AXI.WVALID, 1)
+    expect(c.io.AXI.AWREADY, 1)
+    step(1) // 2
+    poke (c.io.AXI.AWVALID, 0)
+    expect(c.io.AXI.AWREADY, 0)
+    step(1) // 4
+    expect(c.io.AXI.WREADY, 1)
+    step(1) // 5
+    expect(c.io.AXI.WREADY, 0)
+    poke (c.io.AXI.WVALID, 0)
+    poke (c.io.AXI.BREADY, 1)
+    expect(c.io.AXI.BVALID, 1)
+    step(1) // 6
+    expect(c.io.AXI.BRESP, 0)
     poke (c.io.out.credit.grant, 1)
+    step(1)
+    poke (c.io.out.credit.grant, 0)
+    step(2)
+
+    // Write Data, Data First
+    println("Write Data, Data First")
     poke (c.io.AXI.WDATA, 10)
     poke (c.io.AXI.WVALID, 1)
     step(1) // 2
-    poke (c.io.out.credit.grant, 0)
     expect(c.io.AXI.WREADY, 0)
-    poke (c.io.AXI.AWADDR, 1)
+    poke (c.io.AXI.AWADDR, 0x1000000)
     poke (c.io.AXI.AWVALID, 1)
     step(1) // 3
     expect(c.io.AXI.AWREADY, 1)
@@ -256,7 +280,10 @@ class AXINetworkInterfaceWriteTest(c: AXINetworkInterface) extends Tester(c) {
     expect(c.io.AXI.BVALID, 1)
     step(1) // 6
     expect(c.io.AXI.BRESP, 0)
-    step(10)
+    poke (c.io.out.credit.grant, 1)
+    step(1)
+    poke (c.io.out.credit.grant, 0)
+    step(2)
 }
 
 class AXINetworkInterfaceReadTest(c: AXINetworkInterface) extends Tester(c) {
