@@ -237,7 +237,7 @@ object OpenSoC {
                                                         )
                                                     ))
                                                 ))
-            case "AXINetworkInterface" =>  (moduleToTest = () => Module(new AXINetworkInterface(
+            case "AXI4NetworkInterface" =>  (moduleToTest = () => Module(new AXI4NetworkInterface(
                                                     parms.child("MyPacketToFlit", Map(
                                                         ("TopologyDimension"->Hard(Dim)),
                                                         ("RoutersPerDim"->Hard(K)),
@@ -519,8 +519,8 @@ object OpenSoC {
             case "SwitchAllocTest"                           => ( chiselMainTest(myargs, moduleToTest) { c => new SwitchAllocTest(c.asInstanceOf[SwitchAllocator]) } )
             case "RouterRegFileTest"                         => ( chiselMainTest(myargs, moduleToTest) { c => new RouterRegFileTest(c.asInstanceOf[RouterRegFile]) } )
             case "PacketToFlitTest"                          => ( chiselMainTest(myargs, moduleToTest) { c => new PacketToFlitTest(c.asInstanceOf[PacketToFlit]) } )
-            case "AXINetworkInterfaceWriteTest"              => ( chiselMainTest(myargs, moduleToTest) { c => new AXINetworkInterfaceWriteTest(c.asInstanceOf[AXINetworkInterface]) } )
-            case "AXINetworkInterfaceReadTest"               => ( chiselMainTest(myargs, moduleToTest) { c => new AXINetworkInterfaceReadTest(c.asInstanceOf[AXINetworkInterface]) } )
+            case "AXI4NetworkInterfaceWriteTest"              => ( chiselMainTest(myargs, moduleToTest) { c => new AXI4NetworkInterfaceWriteTest(c.asInstanceOf[AXI4NetworkInterface]) } )
+            case "AXI4NetworkInterfaceReadTest"               => ( chiselMainTest(myargs, moduleToTest) { c => new AXI4NetworkInterfaceReadTest(c.asInstanceOf[AXI4NetworkInterface]) } )
             case "BusProbeTest"                              => ( chiselMainTest(myargs, moduleToTest) { c => new BusProbeTest(c.asInstanceOf[BusProbe]) } )
             case "ChannelQTest"                              => ( chiselMainTest(myargs, moduleToTest) { c => new ChannelQTest(c.asInstanceOf[GenericChannelQ]) } )
             case "PacketInjectionQTest"                      => ( chiselMainTest(myargs, moduleToTest) { c => new PacketInjectionQTest(c.asInstanceOf[PacketInjectionQ[Packet]]) } )

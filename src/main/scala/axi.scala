@@ -2,7 +2,7 @@ package OpenSoC
 
 import Chisel._
 
-object AXI4Parameters
+object AXI4
 {
   // These are all fixed by the AXI4 standard:
   val lenBits   = 8
@@ -33,35 +33,47 @@ object AXI4Parameters
   def RESP_DECERR = UInt(3, width = respBits)
 }
 
-class AXI4Lite32(parms: Parameters) extends Bundle {
+class AXI4(parms: Parameters) extends Bundle {
+    // Parameters
+    val packetIDWidth   = parms.get[Int]("packetIDWidth")
+    val dataWidth = parms.get[Int]("AXIDataWidth")
+
     // AXI Write Address Channel Signals
-    val AWVALID =   Bool(INPUT)
-    val AWREADY =   Bool(OUTPUT)
-    val AWADDR =    UInt(INPUT, 32)
-    val AWPROT =    UInt(INPUT, 3)
+    val AWVALID = Bool(INPUT)
+    val AWREADY = Bool(OUTPUT)
+    val AWID    = UInt(INPUT, packetIDWidth)
+    val AWADDR  = UInt(INPUT, 32)
+    val AWLEN   = UInt(INPUT, 8)
+    val AWSIZE  = UInt(INPUT, 3)
+    val AWBURST = UInt(INPUT, 2)
 
     // AXI Write Data Channel Signals
-    val WVALID =    Bool(INPUT)
-    val WREADY =    Bool(OUTPUT)
-    val WDATA =     UInt(INPUT, parms.get[Int]("AXIDataWidth"))
-    val WSTRB =     Bool(INPUT)
+    val WVALID  = Bool(INPUT)
+    val WREADY  = Bool(OUTPUT)
+    val WDATA   = UInt(INPUT, dataWidth)
+    val WSTRB   = Bool(INPUT)
 
     // AXI Write Response Channel Signals
-    val BVALID =    Bool(OUTPUT)
-    val BREADY =    Bool(INPUT)
-    val BRESP =     UInt(OUTPUT, 2)
+    val BVALID  = Bool(OUTPUT)
+    val BREADY  = Bool(INPUT)
+    val BRESP   = UInt(OUTPUT, 2)
+    val BID     = UInt(OUTPUT, packetIDWidth)
 
     // AXI Read Address Channel Signals
-    val ARVALID =   Bool(INPUT)
-    val ARREADY =   Bool(OUTPUT)
-    val ARADDR =    UInt(INPUT, 32)
-    val ARPROT =    UInt(INPUT, 3)
+    val ARVALID = Bool(INPUT)
+    val ARREADY = Bool(OUTPUT)
+    val ARID    = UInt(INPUT, packetIDWidth)
+    val ARADDR  = UInt(INPUT, 32)
+    val ARLEN   = UInt(INPUT, 8)
+    val ARSIZE  = UInt(INPUT, 3)
+    val ARBURST = UInt(INPUT, 2)
 
     // AXI Read Data Channel Signals
-    val RVALID =    Bool(OUTPUT)
-    val RREADY =    Bool(INPUT)
-    val RDATA =     UInt(OUTPUT, parms.get[Int]("AXIDataWidth"))
-    val RRESP =     UInt(OUTPUT, 2)
+    val RVALID  = Bool(OUTPUT)
+    val RREADY  = Bool(INPUT)
+    val RID     = UInt(OUTPUT, packetIDWidth)
+    val RDATA   = UInt(OUTPUT, dataWidth)
+    val RRESP   = UInt(OUTPUT, 2)
 }
 
 /*

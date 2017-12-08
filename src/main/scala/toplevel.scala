@@ -197,7 +197,7 @@ class OpenSoC_CMesh_AXI(parms: Parameters) extends Module(parms) {
 
 
     val io = new Bundle {
-        val AXI                 = Vec.fill(numPorts) { new AXI4Lite32(parms)}
+        val AXI                 = Vec.fill(numPorts) { new AXI4(parms)}
         val cyclesRouterBusy    = Vec.fill(numRouters){ UInt(OUTPUT, width=counterMax.getWidth)}
         val cyclesChannelBusy   = Vec.fill(numRouters*routerRadix){UInt(OUTPUT, width=counterMax.getWidth)}
     }
@@ -219,7 +219,7 @@ class OpenSoC_CMesh_AXI(parms: Parameters) extends Module(parms) {
         for (i <- 0 until numPorts) {
             val injectionQ = Chisel.Module( new GenericChannelQ(parms.child(("InjectionQ", i)))  )
             val ejectionQ = Chisel.Module( new GenericChannelQ(parms.child(("EjectionQ", i))) )
-            val networkInterface = Chisel.Module( new AXINetworkInterface(parms) )
+            val networkInterface = Chisel.Module( new AXI4NetworkInterface(parms) )
 
             networkInterface.io.AXI <> io.AXI(i)
 
@@ -252,7 +252,7 @@ class OpenSoC_CMesh_AXI(parms: Parameters) extends Module(parms) {
                     ("vcArbCtor"->Soft((parms: Parameters) => new RRArbiter(parms)))
                 )) ) )
                 val ejectionQ = Chisel.Module( new EjectionChannelQ(parms.child(("EjectionQ", i))) )
-                val networkInterface = Chisel.Module( new AXINetworkInterface(parms) )
+                val networkInterface = Chisel.Module( new AXI4NetworkInterface(parms) )
 
                 networkInterface.io.AXI <> io.AXI(i)
 
