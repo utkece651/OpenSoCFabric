@@ -1,0 +1,299 @@
+STARTING ./OpenSoC_CMesh_AXI
+RESET 1
+STEP 1 -> 1
+  POKE OpenSoC_CMesh_AXI.io_AXI_0_AWVALID <- 0x0
+  POKE OpenSoC_CMesh_AXI.io_AXI_0_AWID <- 0x0
+  POKE OpenSoC_CMesh_AXI.io_AXI_0_AWADDR <- 0x0
+  POKE OpenSoC_CMesh_AXI.io_AXI_0_AWLEN <- 0x0
+  POKE OpenSoC_CMesh_AXI.io_AXI_0_AWSIZE <- 0x6
+  POKE OpenSoC_CMesh_AXI.io_AXI_0_AWBURST <- 0x0
+  POKE OpenSoC_CMesh_AXI.io_AXI_0_WVALID <- 0x0
+  POKE OpenSoC_CMesh_AXI.io_AXI_0_WDATA <- 0x0
+  POKE OpenSoC_CMesh_AXI.io_AXI_0_WSTRB <- 0x0
+  POKE OpenSoC_CMesh_AXI.io_AXI_0_BREADY <- 0x0
+  POKE OpenSoC_CMesh_AXI.io_AXI_0_ARVALID <- 0x0
+  POKE OpenSoC_CMesh_AXI.io_AXI_0_ARADDR <- 0x0
+  POKE OpenSoC_CMesh_AXI.io_AXI_0_RREADY <- 0x0
+  POKE OpenSoC_CMesh_AXI.io_AXI_1_AWVALID <- 0x0
+  POKE OpenSoC_CMesh_AXI.io_AXI_1_AWID <- 0x0
+  POKE OpenSoC_CMesh_AXI.io_AXI_1_AWADDR <- 0x0
+  POKE OpenSoC_CMesh_AXI.io_AXI_1_AWLEN <- 0x0
+  POKE OpenSoC_CMesh_AXI.io_AXI_1_AWSIZE <- 0x6
+  POKE OpenSoC_CMesh_AXI.io_AXI_1_AWBURST <- 0x0
+  POKE OpenSoC_CMesh_AXI.io_AXI_1_WVALID <- 0x0
+  POKE OpenSoC_CMesh_AXI.io_AXI_1_WDATA <- 0x0
+  POKE OpenSoC_CMesh_AXI.io_AXI_1_WSTRB <- 0x0
+  POKE OpenSoC_CMesh_AXI.io_AXI_1_BREADY <- 0x0
+  POKE OpenSoC_CMesh_AXI.io_AXI_1_ARVALID <- 0x0
+  POKE OpenSoC_CMesh_AXI.io_AXI_1_ARADDR <- 0x0
+  POKE OpenSoC_CMesh_AXI.io_AXI_1_RREADY <- 0x0
+  POKE OpenSoC_CMesh_AXI.io_AXI_2_AWVALID <- 0x0
+  POKE OpenSoC_CMesh_AXI.io_AXI_2_AWID <- 0x0
+  POKE OpenSoC_CMesh_AXI.io_AXI_2_AWADDR <- 0x0
+  POKE OpenSoC_CMesh_AXI.io_AXI_2_AWLEN <- 0x0
+  POKE OpenSoC_CMesh_AXI.io_AXI_2_AWSIZE <- 0x6
+  POKE OpenSoC_CMesh_AXI.io_AXI_2_AWBURST <- 0x0
+  POKE OpenSoC_CMesh_AXI.io_AXI_2_WVALID <- 0x0
+  POKE OpenSoC_CMesh_AXI.io_AXI_2_WDATA <- 0x0
+  POKE OpenSoC_CMesh_AXI.io_AXI_2_WSTRB <- 0x0
+  POKE OpenSoC_CMesh_AXI.io_AXI_2_BREADY <- 0x0
+  POKE OpenSoC_CMesh_AXI.io_AXI_2_ARVALID <- 0x0
+  POKE OpenSoC_CMesh_AXI.io_AXI_2_ARADDR <- 0x0
+  POKE OpenSoC_CMesh_AXI.io_AXI_2_RREADY <- 0x0
+  POKE OpenSoC_CMesh_AXI.io_AXI_3_AWVALID <- 0x0
+  POKE OpenSoC_CMesh_AXI.io_AXI_3_AWID <- 0x0
+  POKE OpenSoC_CMesh_AXI.io_AXI_3_AWADDR <- 0x0
+  POKE OpenSoC_CMesh_AXI.io_AXI_3_AWLEN <- 0x0
+  POKE OpenSoC_CMesh_AXI.io_AXI_3_AWSIZE <- 0x6
+  POKE OpenSoC_CMesh_AXI.io_AXI_3_AWBURST <- 0x0
+  POKE OpenSoC_CMesh_AXI.io_AXI_3_WVALID <- 0x0
+  POKE OpenSoC_CMesh_AXI.io_AXI_3_WDATA <- 0x0
+  POKE OpenSoC_CMesh_AXI.io_AXI_3_WSTRB <- 0x0
+  POKE OpenSoC_CMesh_AXI.io_AXI_3_BREADY <- 0x0
+  POKE OpenSoC_CMesh_AXI.io_AXI_3_ARVALID <- 0x0
+  POKE OpenSoC_CMesh_AXI.io_AXI_3_ARADDR <- 0x0
+  POKE OpenSoC_CMesh_AXI.io_AXI_3_RREADY <- 0x0
+STEP 1 -> 2
+**** Read Packet Availability (Packet Unavailable) ****
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_2_ARREADY -> 0x1 == 0x1 PASS
+  POKE OpenSoC_CMesh_AXI.io_AXI_2_ARADDR <- 0x0
+  POKE OpenSoC_CMesh_AXI.io_AXI_2_ARVALID <- 0x1
+STEP 1 -> 3
+  POKE OpenSoC_CMesh_AXI.io_AXI_2_ARVALID <- 0x0
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_2_ARREADY -> 0x1 == 0x1 PASS
+STEP 1 -> 4
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_2_RVALID -> 0x1 == 0x1 PASS
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_2_RDATA -> 0x0 == 0x0 PASS
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_2_RID -> 0x0 == 0x0 PASS
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_2_RRESP -> 0x0 == 0x0 PASS
+  POKE OpenSoC_CMesh_AXI.io_AXI_2_RREADY <- 0x1
+STEP 1 -> 5
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_2_RVALID -> 0x0 == 0x0 PASS
+STEP 1 -> 6
+**** Read Packet Availability (Packet Unavailable) ****
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_2_ARREADY -> 0x1 == 0x1 PASS
+  POKE OpenSoC_CMesh_AXI.io_AXI_2_ARADDR <- 0x0
+  POKE OpenSoC_CMesh_AXI.io_AXI_2_ARVALID <- 0x1
+STEP 1 -> 7
+  POKE OpenSoC_CMesh_AXI.io_AXI_2_ARVALID <- 0x0
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_2_ARREADY -> 0x1 == 0x1 PASS
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_2_RVALID -> 0x1 == 0x1 PASS
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_2_RDATA -> 0x0 == 0x0 PASS
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_2_RID -> 0x0 == 0x0 PASS
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_2_RRESP -> 0x0 == 0x0 PASS
+STEP 1 -> 8
+  POKE OpenSoC_CMesh_AXI.io_AXI_2_RREADY <- 0x1
+STEP 1 -> 9
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_2_RVALID -> 0x0 == 0x0 PASS
+STEP 1 -> 10
+**** Send Packet to AXI 2 ****
+  POKE OpenSoC_CMesh_AXI.io_AXI_0_WDATA <- 0xa
+  POKE OpenSoC_CMesh_AXI.io_AXI_0_WVALID <- 0x1
+STEP 1 -> 11
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_0_WREADY -> 0x0 == 0x0 PASS
+  POKE OpenSoC_CMesh_AXI.io_AXI_0_AWADDR <- 0x1000000
+  POKE OpenSoC_CMesh_AXI.io_AXI_0_AWVALID <- 0x1
+  POKE OpenSoC_CMesh_AXI.io_AXI_0_AWID <- 0x1
+STEP 1 -> 12
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_0_AWREADY -> 0x1 == 0x1 PASS
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_0_WREADY -> 0x0 == 0x0 PASS
+STEP 1 -> 13
+  POKE OpenSoC_CMesh_AXI.io_AXI_0_AWVALID <- 0x0
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_0_WREADY -> 0x1 == 0x1 PASS
+STEP 1 -> 14
+  POKE OpenSoC_CMesh_AXI.io_AXI_0_WVALID <- 0x0
+  POKE OpenSoC_CMesh_AXI.io_AXI_0_BREADY <- 0x1
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_0_BVALID -> 0x1 == 0x1 PASS
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_0_BID -> 0x1 == 0x1 PASS
+STEP 1 -> 15
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_0_BRESP -> 0x0 == 0x0 PASS
+STEP 10 -> 25
+**** Read Packet Avalibility AXI(0) (Unavalible) ****
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_0_ARREADY -> 0x1 == 0x1 PASS
+  POKE OpenSoC_CMesh_AXI.io_AXI_0_ARADDR <- 0x0
+  POKE OpenSoC_CMesh_AXI.io_AXI_0_ARVALID <- 0x1
+STEP 1 -> 26
+  POKE OpenSoC_CMesh_AXI.io_AXI_0_ARVALID <- 0x0
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_0_ARREADY -> 0x1 == 0x1 PASS
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_0_RVALID -> 0x1 == 0x1 PASS
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_0_RDATA -> 0x0 == 0x0 PASS
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_0_RID -> 0x0 == 0x0 PASS
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_0_RRESP -> 0x0 == 0x0 PASS
+STEP 1 -> 27
+  POKE OpenSoC_CMesh_AXI.io_AXI_0_RREADY <- 0x1
+STEP 1 -> 28
+**** Read Packet Avalibility AXI(1) (Unavalible) ****
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_1_ARREADY -> 0x1 == 0x1 PASS
+  POKE OpenSoC_CMesh_AXI.io_AXI_1_ARADDR <- 0x0
+  POKE OpenSoC_CMesh_AXI.io_AXI_1_ARVALID <- 0x1
+STEP 1 -> 29
+  POKE OpenSoC_CMesh_AXI.io_AXI_1_ARVALID <- 0x0
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_1_ARREADY -> 0x1 == 0x1 PASS
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_1_RVALID -> 0x1 == 0x1 PASS
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_1_RDATA -> 0x0 == 0x0 PASS
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_1_RID -> 0x0 == 0x0 PASS
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_1_RRESP -> 0x0 == 0x0 PASS
+STEP 1 -> 30
+  POKE OpenSoC_CMesh_AXI.io_AXI_1_RREADY <- 0x1
+STEP 1 -> 31
+**** Read Packet Avalibility AXI(2) (Avalible) ****
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_2_ARREADY -> 0x1 == 0x1 PASS
+  POKE OpenSoC_CMesh_AXI.io_AXI_2_ARADDR <- 0x0
+  POKE OpenSoC_CMesh_AXI.io_AXI_2_ARVALID <- 0x1
+STEP 1 -> 32
+  POKE OpenSoC_CMesh_AXI.io_AXI_2_ARVALID <- 0x0
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_2_ARREADY -> 0x1 == 0x1 PASS
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_2_RVALID -> 0x1 == 0x1 PASS
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_2_RDATA -> 0x1 == 0x1 PASS
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_2_RID -> 0x1 == 0x1 PASS
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_2_RRESP -> 0x0 == 0x0 PASS
+STEP 1 -> 33
+  POKE OpenSoC_CMesh_AXI.io_AXI_2_RREADY <- 0x1
+STEP 1 -> 34
+**** Read Packet Avalibility AXI(3) (Unavalible) ****
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_3_ARREADY -> 0x1 == 0x1 PASS
+  POKE OpenSoC_CMesh_AXI.io_AXI_3_ARADDR <- 0x0
+  POKE OpenSoC_CMesh_AXI.io_AXI_3_ARVALID <- 0x1
+STEP 1 -> 35
+  POKE OpenSoC_CMesh_AXI.io_AXI_3_ARVALID <- 0x0
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_3_ARREADY -> 0x1 == 0x1 PASS
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_3_RVALID -> 0x1 == 0x1 PASS
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_3_RDATA -> 0x0 == 0x0 PASS
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_3_RID -> 0x0 == 0x0 PASS
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_3_RRESP -> 0x0 == 0x0 PASS
+STEP 1 -> 36
+  POKE OpenSoC_CMesh_AXI.io_AXI_3_RREADY <- 0x1
+STEP 1 -> 37
+**** Read Packet Data ****
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_2_ARREADY -> 0x1 == 0x1 PASS
+  POKE OpenSoC_CMesh_AXI.io_AXI_2_ARADDR <- 0x1
+  POKE OpenSoC_CMesh_AXI.io_AXI_2_ARVALID <- 0x1
+STEP 1 -> 38
+  POKE OpenSoC_CMesh_AXI.io_AXI_2_ARVALID <- 0x0
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_2_ARREADY -> 0x1 == 0x1 PASS
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_2_RVALID -> 0x1 == 0x1 PASS
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_2_RDATA -> 0xa == 0xa PASS
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_2_RID -> 0x1 == 0x1 PASS
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_2_RRESP -> 0x0 == 0x0 PASS
+STEP 1 -> 39
+STEP 1 -> 40
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_2_RVALID -> 0x0 == 0x0 PASS
+STEP 1 -> 41
+  POKE OpenSoC_CMesh_AXI.io_AXI_2_RREADY <- 0x1
+STEP 1 -> 42
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_2_RVALID -> 0x0 == 0x0 PASS
+STEP 1 -> 43
+**** Read Invalid Packet ****
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_2_ARREADY -> 0x1 == 0x1 PASS
+  POKE OpenSoC_CMesh_AXI.io_AXI_2_ARADDR <- 0x1
+  POKE OpenSoC_CMesh_AXI.io_AXI_2_ARVALID <- 0x1
+STEP 1 -> 44
+  POKE OpenSoC_CMesh_AXI.io_AXI_2_ARVALID <- 0x0
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_2_ARREADY -> 0x1 == 0x1 PASS
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_2_RVALID -> 0x1 == 0x1 PASS
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_2_RID -> 0x0 == 0x0 PASS
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_2_RRESP -> 0x2 == 0x2 PASS
+STEP 1 -> 45
+  POKE OpenSoC_CMesh_AXI.io_AXI_2_RREADY <- 0x1
+STEP 1 -> 46
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_2_RVALID -> 0x0 == 0x0 PASS
+STEP 1 -> 47
+**** Read Packet Avalibility (Unavalible) ****
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_2_ARREADY -> 0x1 == 0x1 PASS
+  POKE OpenSoC_CMesh_AXI.io_AXI_2_ARADDR <- 0x0
+  POKE OpenSoC_CMesh_AXI.io_AXI_2_ARVALID <- 0x1
+STEP 1 -> 48
+  POKE OpenSoC_CMesh_AXI.io_AXI_2_ARVALID <- 0x0
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_2_ARREADY -> 0x1 == 0x1 PASS
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_2_RVALID -> 0x1 == 0x1 PASS
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_2_RDATA -> 0x0 == 0x0 PASS
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_2_RID -> 0x0 == 0x0 PASS
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_2_RRESP -> 0x0 == 0x0 PASS
+STEP 1 -> 49
+  POKE OpenSoC_CMesh_AXI.io_AXI_2_RREADY <- 0x1
+STEP 1 -> 50
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_2_RVALID -> 0x0 == 0x0 PASS
+STEP 1 -> 51
+**** Write Packet with multiple data bursts ****
+  POKE OpenSoC_CMesh_AXI.io_AXI_0_AWADDR <- 0x1000000
+  POKE OpenSoC_CMesh_AXI.io_AXI_0_AWID <- 0x3
+  POKE OpenSoC_CMesh_AXI.io_AXI_0_AWLEN <- 0x3
+  POKE OpenSoC_CMesh_AXI.io_AXI_0_AWVALID <- 0x1
+STEP 1 -> 52
+  POKE OpenSoC_CMesh_AXI.io_AXI_0_WDATA <- 0x14
+  POKE OpenSoC_CMesh_AXI.io_AXI_0_WVALID <- 0x1
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_0_AWREADY -> 0x1 == 0x1 PASS
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_0_WREADY -> 0x0 == 0x0 PASS
+STEP 1 -> 53
+  POKE OpenSoC_CMesh_AXI.io_AXI_0_AWVALID <- 0x0
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_0_AWREADY -> 0x0 == 0x0 PASS
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_0_WREADY -> 0x1 == 0x1 PASS
+STEP 1 -> 54
+  POKE OpenSoC_CMesh_AXI.io_AXI_0_WVALID <- 0x0
+STEP 1 -> 55
+  POKE OpenSoC_CMesh_AXI.io_AXI_0_WDATA <- 0x15
+  POKE OpenSoC_CMesh_AXI.io_AXI_0_WVALID <- 0x1
+STEP 1 -> 56
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_0_WREADY -> 0x1 == 0x1 PASS
+  POKE OpenSoC_CMesh_AXI.io_AXI_0_WDATA <- 0x16
+STEP 1 -> 57
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_0_WREADY -> 0x1 == 0x1 PASS
+  POKE OpenSoC_CMesh_AXI.io_AXI_0_WDATA <- 0x17
+STEP 1 -> 58
+  POKE OpenSoC_CMesh_AXI.io_AXI_0_WVALID <- 0x0
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_0_WREADY -> 0x0 == 0x0 PASS
+  POKE OpenSoC_CMesh_AXI.io_AXI_0_BREADY <- 0x1
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_0_BVALID -> 0x1 == 0x1 PASS
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_0_BID -> 0x3 == 0x3 PASS
+STEP 1 -> 59
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_0_BRESP -> 0x0 == 0x0 PASS
+STEP 5 -> 64
+STEP 10 -> 74
+**** Read Packet Avalibility (Avalible) ****
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_2_ARREADY -> 0x1 == 0x1 PASS
+  POKE OpenSoC_CMesh_AXI.io_AXI_2_ARADDR <- 0x0
+  POKE OpenSoC_CMesh_AXI.io_AXI_2_ARVALID <- 0x1
+STEP 1 -> 75
+  POKE OpenSoC_CMesh_AXI.io_AXI_2_ARVALID <- 0x0
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_2_ARREADY -> 0x1 == 0x1 PASS
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_2_RVALID -> 0x1 == 0x1 PASS
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_2_RDATA -> 0x4 == 0x4 PASS
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_2_RID -> 0x3 == 0x3 PASS
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_2_RRESP -> 0x0 == 0x0 PASS
+STEP 1 -> 76
+  POKE OpenSoC_CMesh_AXI.io_AXI_2_RREADY <- 0x1
+STEP 1 -> 77
+**** Read Packet with multiple data bursts ****
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_2_ARREADY -> 0x1 == 0x1 PASS
+  POKE OpenSoC_CMesh_AXI.io_AXI_2_ARADDR <- 0x1
+  POKE OpenSoC_CMesh_AXI.io_AXI_2_ARVALID <- 0x1
+  POKE OpenSoC_CMesh_AXI.io_AXI_2_ARLEN <- 0x3
+STEP 1 -> 78
+  POKE OpenSoC_CMesh_AXI.io_AXI_2_ARVALID <- 0x0
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_2_ARREADY -> 0x1 == 0x1 PASS
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_2_RVALID -> 0x1 == 0x1 PASS
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_2_RDATA -> 0x14 == 0x14 PASS
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_2_RID -> 0x3 == 0x3 PASS
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_2_RRESP -> 0x0 == 0x0 PASS
+STEP 1 -> 79
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_2_ARREADY -> 0x1 == 0x1 PASS
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_2_RVALID -> 0x1 == 0x1 PASS
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_2_RDATA -> 0x15 == 0x15 PASS
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_2_RID -> 0x3 == 0x3 PASS
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_2_RRESP -> 0x0 == 0x0 PASS
+STEP 1 -> 80
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_2_ARREADY -> 0x1 == 0x1 PASS
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_2_RVALID -> 0x1 == 0x1 PASS
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_2_RDATA -> 0x16 == 0x16 PASS
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_2_RID -> 0x3 == 0x3 PASS
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_2_RRESP -> 0x0 == 0x0 PASS
+STEP 1 -> 81
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_2_ARREADY -> 0x1 == 0x1 PASS
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_2_RVALID -> 0x1 == 0x1 PASS
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_2_RDATA -> 0x17 == 0x17 PASS
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_2_RID -> 0x3 == 0x3 PASS
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_2_RRESP -> 0x0 == 0x0 PASS
+STEP 1 -> 82
+  EXPECT OpenSoC_CMesh_AXI.io_AXI_2_RVALID -> 0x0 == 0x0 PASS
+STEP 1 -> 83
+RAN 83 CYCLES PASSED

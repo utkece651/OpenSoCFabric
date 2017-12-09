@@ -1,0 +1,556 @@
+$timescale 1ps $end
+$scope module AXI4NetworkInterface $end
+$var wire 1 ! clk $end
+$var wire 1 " reset $end
+$var wire 1 # io_in_flitValid $end
+$var wire 1 ' io_AXI_RREADY $end
+$var wire 1 ( io_AXI_RVALID $end
+$var wire 1 - io_AXI_WVALID $end
+$var wire 1 / io_out_credit_grant $end
+$var wire 1 3 io_AXI_AWREADY $end
+$var wire 1 4 io_AXI_WREADY $end
+$var wire 1 5 io_AXI_BVALID $end
+$var wire 1 6 io_AXI_ARREADY $end
+$var wire 1 7 io_AXI_ARVALID $end
+$var wire 1 8 readValidReg $end
+$var wire 1 = io_out_flitValid $end
+$var wire 1 > io_in_credit_grant $end
+$var wire 1 ? io_AXI_AWVALID $end
+$var wire 1 @ io_AXI_BREADY $end
+$var wire 1 A io_AXI_WSTRB $end
+$var wire 2 B io_AXI_BRESP $end
+$var wire 2 C io_AXI_RRESP $end
+$var wire 2 G sw_state $end
+$var wire 2 H io_AXI_ARBURST $end
+$var wire 2 I io_AXI_AWBURST $end
+$var wire 3 K io_AXI_ARSIZE $end
+$var wire 3 L io_AXI_AWSIZE $end
+$var wire 4 O io_AXI_BID $end
+$var wire 4 P io_AXI_RID $end
+$var wire 4 R io_AXI_AWID $end
+$var wire 4 V wid $end
+$var wire 4 W io_AXI_ARID $end
+$var wire 8 Z io_AXI_ARLEN $end
+$var wire 8 [ wlen $end
+$var wire 8 \ rlen $end
+$var wire 8 ] io_AXI_AWLEN $end
+$var wire 8 ^ cur_data_pkt $end
+$var wire 8 _ data_len $end
+$var wire 32 ` io_AXI_ARADDR $end
+$var wire 32 a io_AXI_RDATA $end
+$var wire 32 b io_AXI_AWADDR $end
+$var wire 32 c io_AXI_WDATA $end
+$var wire 32 e readAddrReg $end
+$var wire 43 f io_in_flit_x $end
+$var wire 43 k io_out_flit_x $end
+$scope module creditCon $end
+$var wire 1 , io_almostOut $end
+$var wire 1 . io_inConsume $end
+$var wire 1 0 io_inCredit_grant $end
+$var wire 1 1 reset $end
+$var wire 1 2 io_outCredit $end
+$var wire 5 Y credCount $end
+$upscope $end
+$scope module r_queue $end
+$var wire 1 $ io_enq_valid $end
+$var wire 1 % io_enq_ready $end
+$var wire 1 & io_deq_valid $end
+$var wire 1 ) io_deq_ready $end
+$var wire 1 * reset $end
+$var wire 1 + maybe_full $end
+$var wire 4 M R4 $end
+$var wire 4 N R1 $end
+$var wire 5 X io_count $end
+$var wire 43 g io_enq_bits_x $end
+$var wire 43 h io_deq_bits_x $end
+$upscope $end
+$scope module headBundle2Flit $end
+$var wire 1 9 io_inHead_vcPort $end
+$var wire 1 : io_inHead_isTail $end
+$var wire 2 D io_inHead_destination_0 $end
+$var wire 2 E io_inHead_destination_1 $end
+$var wire 2 F io_inHead_destination_2 $end
+$var wire 3 J io_inHead_priorityLevel $end
+$var wire 4 Q io_inHead_packetType $end
+$var wire 4 S io_inHead_packetID $end
+$var wire 43 i io_outFlit_x $end
+$upscope $end
+$scope module bodyBundle2Flit $end
+$var wire 1 ; io_inBody_vcPort $end
+$var wire 1 < io_inBody_isTail $end
+$var wire 4 T io_inBody_flitID $end
+$var wire 4 U io_inBody_packetID $end
+$var wire 32 d io_inBody_payload $end
+$var wire 43 j io_outFlit_x $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+$dumpvars
+$end
+#0
+b1 !
+b1 "
+b0 #
+b0 $
+b1 %
+b0 &
+b1 '
+b0 (
+b0 )
+b1 *
+b0 +
+b0 ,
+b0 -
+b0 .
+b0 /
+b0 0
+b1 1
+b0 2
+b0 3
+b0 4
+b0 5
+b1 6
+b0 7
+b0 8
+b0 9
+b0 :
+b0 ;
+b0 <
+b0 =
+b0 >
+b0 ?
+b0 @
+b1 A
+b00 B
+b00 C
+b00 D
+b00 E
+b00 F
+b00 G
+b01 H
+b00 I
+b000 J
+b000 K
+b100 L
+b0000 M
+b0000 N
+b0000 O
+b0000 P
+b0000 Q
+b1000 R
+b0000 S
+b0000 T
+b0000 U
+b0000 V
+b0001 W
+b00000 X
+b00000 Y
+b11101101 Z
+b00000000 [
+b00000000 \
+b10000000 ]
+b00000000 ^
+b00000000 _
+b00000000000000000000000000000001 `
+b00000000000000000000000000000000 a
+b00010111010100111111000000100000 b
+b00001111110001000100101100110000 c
+b00000000000000000000000000000000 d
+b00000000000000000000000000000000 e
+b0000000000000000000000000000000000000000011 f
+b0000000000000000000000000000000000000000011 g
+b0000000000000000000000000000000000000000000 h
+b0000000000000000000000000000000000000000001 i
+b0000000000000000000000000000000000000000000 j
+b0000000000000000000000000000000000000000000 k
+#1
+b0 !
+#2
+b1 !
+b1 "
+b1 2
+b10000 Y
+#3
+b0 !
+#4
+b1 !
+#5
+b0 !
+#6
+b1 !
+#7
+b0 !
+#8
+b1 !
+#9
+b0 !
+#10
+b1 !
+#11
+b0 !
+#12
+b1 !
+b0 "
+b0 #
+b0 $
+b0 '
+b0 *
+b0 -
+b0 /
+b0 0
+b0 1
+b0 7
+b0 ?
+b0 @
+b0 A
+b00 H
+b00 I
+b000 K
+b110 L
+b0000 R
+b0000 W
+b00000000 Z
+b00000000 ]
+b00000000000000000000000000000000 `
+b00000000000000000000000000000000 b
+b00000000000000000000000000000000 c
+b0000000000000000000000000000000000000000000 f
+b0000000000000000000000000000000000000000000 g
+#13
+b0 !
+#14
+b1 !
+b1 ?
+b0001 R
+b00000000000000010000000000000000 b
+#15
+b0 !
+#16
+b1 !
+b1 -
+b1 .
+b1 3
+b1 =
+b01 D
+b01 G
+b0001 Q
+b0001 S
+b00000000000000000000000000010100 c
+b0000000000000000000000000010000010000010001 i
+b0000000000000000000000000010000010000010001 k
+#17
+b0 !
+#18
+b1 !
+b0 3
+b1 4
+b1 <
+b0 ?
+b00 D
+b10 G
+b0000 Q
+b0000 S
+b0001 T
+b0001 U
+b0001 V
+b01111 Y
+b00000001 _
+b00000000000000000000000000010100 d
+b0000000000000000000000000000000000000000001 i
+b0001100001000000000000000000000000000101000 j
+b0001100001000000000000000000000000000101000 k
+#19
+b0 !
+#20
+b1 !
+b0 -
+b0 .
+b0 4
+b1 5
+b0 <
+b0 =
+b1 @
+b11 G
+b0001 O
+b0000 T
+b0000 U
+b01110 Y
+b00000001 ^
+b00000000000000000000000000000000 d
+b0000000000000000000000000000000000000000000 j
+b0000000000000000000000000000000000000000000 k
+#21
+b0 !
+#22
+b1 !
+b1 /
+b1 0
+b0 5
+b00 G
+b0000 O
+#23
+b0 !
+#24
+b1 !
+b01111 Y
+#25
+b0 !
+#26
+b1 !
+b0 /
+b0 0
+b10000 Y
+#27
+b0 !
+#28
+b1 !
+#29
+b0 !
+#30
+b1 !
+b1 -
+b00000000000000000000000000001010 c
+#31
+b0 !
+#32
+b1 !
+b1 ?
+b0010 R
+b00000001000000000000000000000000 b
+#33
+b0 !
+#34
+b1 !
+b1 .
+b1 3
+b1 =
+b01 E
+b01 G
+b0001 Q
+b0010 S
+b0000000000000000000000000100000010001000001 i
+b0000000000000000000000000100000010001000001 k
+#35
+b0 !
+#36
+b1 !
+b0 3
+b1 4
+b1 <
+b0 ?
+b00 E
+b10 G
+b0000 Q
+b0000 S
+b0010 T
+b0010 U
+b0010 V
+b01111 Y
+b00000000 ^
+b00000000000000000000000000001010 d
+b0000000000000000000000000000000000000000001 i
+b0010100010000000000000000000000000000010100 j
+b0010100010000000000000000000000000000010100 k
+#37
+b0 !
+#38
+b1 !
+b0 -
+b0 .
+b0 4
+b1 5
+b0 <
+b0 =
+b11 G
+b0010 O
+b0000 T
+b0000 U
+b01110 Y
+b00000001 ^
+b00000000000000000000000000000000 d
+b0000000000000000000000000000000000000000000 j
+b0000000000000000000000000000000000000000000 k
+#39
+b0 !
+#40
+b1 !
+b1 /
+b1 0
+b0 5
+b00 G
+b0000 O
+#41
+b0 !
+#42
+b1 !
+b01111 Y
+#43
+b0 !
+#44
+b1 !
+b0 /
+b0 0
+b10000 Y
+#45
+b0 !
+#46
+b1 !
+#47
+b0 !
+#48
+b1 !
+b1 ?
+b0011 R
+b00000011 ]
+b00000000000000010000000000000000 b
+#49
+b0 !
+#50
+b1 !
+b1 -
+b1 .
+b1 3
+b1 =
+b01 D
+b01 G
+b0100 Q
+b0011 S
+b00000000000000000000000000010100 c
+b0000000000000000000000000110001000000010001 i
+b0000000000000000000000000110001000000010001 k
+#51
+b0 !
+#52
+b1 !
+b0 3
+b1 4
+b0 ?
+b00 D
+b10 G
+b0000 Q
+b0000 S
+b0011 T
+b0011 U
+b0011 V
+b01111 Y
+b00000000 ^
+b00000100 _
+b00000000000000000000000000010100 d
+b0000000000000000000000000000000000000000001 i
+b0011000011000000000000000000000000000101000 j
+b0011000011000000000000000000000000000101000 k
+#53
+b0 !
+#54
+b1 !
+b0 -
+b0 .
+b0 4
+b0 =
+b0000 T
+b0000 U
+b01110 Y
+b00000001 ^
+b00000000000000000000000000000000 d
+b0000000000000000000000000000000000000000000 j
+b0000000000000000000000000000000000000000000 k
+#55
+b0 !
+#56
+b1 !
+b1 -
+b1 .
+b1 4
+b1 =
+b0011 T
+b0011 U
+b00000000000000000000000000010101 c
+b00000000000000000000000000010101 d
+b0011000011000000000000000000000000000101010 j
+b0011000011000000000000000000000000000101010 k
+#57
+b0 !
+#58
+b1 !
+b01101 Y
+b00000010 ^
+b00000000000000000000000000010110 c
+b00000000000000000000000000010110 d
+b0011000011000000000000000000000000000101100 j
+b0011000011000000000000000000000000000101100 k
+#59
+b0 !
+#60
+b1 !
+b1 <
+b01100 Y
+b00000011 ^
+b00000000000000000000000000010111 c
+b00000000000000000000000000010111 d
+b0011100011000000000000000000000000000101110 j
+b0011100011000000000000000000000000000101110 k
+#61
+b0 !
+#62
+b1 !
+b0 -
+b0 .
+b0 4
+b1 5
+b0 <
+b0 =
+b11 G
+b0011 O
+b0000 T
+b0000 U
+b01011 Y
+b00000100 ^
+b00000000000000000000000000000000 d
+b0000000000000000000000000000000000000000000 j
+b0000000000000000000000000000000000000000000 k
+#63
+b0 !
+#64
+b1 !
+b1 /
+b1 0
+b0 5
+b00 G
+b0000 O
+#65
+b0 !
+#66
+b1 !
+b01100 Y
+#67
+b0 !
+#68
+b1 !
+b01101 Y
+#69
+b0 !
+#70
+b1 !
+b01110 Y
+#71
+b0 !
+#72
+b1 !
+b01111 Y
+#73
+b0 !
+#74
+b1 !
+b0 /
+b0 0
+b10000 Y
+#75
+b0 !
+#76
+b1 !
+#77
+b0 !
+#78
+b1 !
+#79
+b0 !

@@ -1,0 +1,135 @@
+STARTING ./AXI4NetworkInterface
+  POKE AXI4NetworkInterface.io_AXI_AWVALID <- 0x0
+  POKE AXI4NetworkInterface.io_AXI_AWID <- 0x0
+  POKE AXI4NetworkInterface.io_AXI_AWADDR <- 0x0
+  POKE AXI4NetworkInterface.io_AXI_AWLEN <- 0x0
+  POKE AXI4NetworkInterface.io_AXI_AWSIZE <- 0x6
+  POKE AXI4NetworkInterface.io_AXI_AWBURST <- 0x0
+  POKE AXI4NetworkInterface.io_AXI_WVALID <- 0x0
+  POKE AXI4NetworkInterface.io_AXI_WDATA <- 0x0
+  POKE AXI4NetworkInterface.io_AXI_WSTRB <- 0x0
+  POKE AXI4NetworkInterface.io_AXI_BREADY <- 0x0
+  POKE AXI4NetworkInterface.io_AXI_ARVALID <- 0x0
+  POKE AXI4NetworkInterface.io_AXI_ARADDR <- 0x0
+  POKE AXI4NetworkInterface.io_AXI_RREADY <- 0x0
+  POKE AXI4NetworkInterface.io_out_credit_grant <- 0x0
+  POKE AXI4NetworkInterface.io_in_flit_x <- 0x0
+  POKE AXI4NetworkInterface.io_in_flitValid <- 0x0
+RESET 1
+STEP 1 -> 1
+**** Write Packet with Addr Available First ****
+  POKE AXI4NetworkInterface.io_AXI_AWADDR <- 0x10000
+  POKE AXI4NetworkInterface.io_AXI_AWID <- 0x1
+  POKE AXI4NetworkInterface.io_AXI_AWLEN <- 0x0
+  POKE AXI4NetworkInterface.io_AXI_AWVALID <- 0x1
+  EXPECT AXI4NetworkInterface.io_out_flitValid -> 0x0 == 0x0 PASS
+STEP 1 -> 2
+  POKE AXI4NetworkInterface.io_AXI_WDATA <- 0x14
+  POKE AXI4NetworkInterface.io_AXI_WVALID <- 0x1
+  EXPECT AXI4NetworkInterface.io_AXI_AWREADY -> 0x1 == 0x1 PASS
+  EXPECT AXI4NetworkInterface.io_AXI_WREADY -> 0x0 == 0x0 PASS
+  EXPECT AXI4NetworkInterface.io_out_flitValid -> 0x1 == 0x1 PASS
+  EXPECT AXI4NetworkInterface.io_out_flit_x -> 0x10411 == 0x10411 PASS
+STEP 1 -> 3
+  POKE AXI4NetworkInterface.io_AXI_AWVALID <- 0x0
+  EXPECT AXI4NetworkInterface.io_AXI_AWREADY -> 0x0 == 0x0 PASS
+  EXPECT AXI4NetworkInterface.io_AXI_WREADY -> 0x1 == 0x1 PASS
+  POKE AXI4NetworkInterface.io_AXI_WVALID <- 0x1
+  EXPECT AXI4NetworkInterface.io_out_flitValid -> 0x1 == 0x1 PASS
+  EXPECT AXI4NetworkInterface.io_out_flit_x -> 0xc200000028 == 0xc200000028 PASS
+STEP 1 -> 4
+  POKE AXI4NetworkInterface.io_AXI_WVALID <- 0x0
+  EXPECT AXI4NetworkInterface.io_AXI_WREADY -> 0x0 == 0x0 PASS
+  POKE AXI4NetworkInterface.io_AXI_BREADY <- 0x1
+  EXPECT AXI4NetworkInterface.io_AXI_BVALID -> 0x1 == 0x1 PASS
+  EXPECT AXI4NetworkInterface.io_AXI_BID -> 0x1 == 0x1 PASS
+  EXPECT AXI4NetworkInterface.io_out_flitValid -> 0x0 == 0x0 PASS
+STEP 1 -> 5
+  EXPECT AXI4NetworkInterface.io_AXI_BRESP -> 0x0 == 0x0 PASS
+  POKE AXI4NetworkInterface.io_out_credit_grant <- 0x1
+STEP 2 -> 7
+  POKE AXI4NetworkInterface.io_out_credit_grant <- 0x0
+STEP 2 -> 9
+**** Write Packet with Data Available First ****
+  POKE AXI4NetworkInterface.io_AXI_WDATA <- 0xa
+  POKE AXI4NetworkInterface.io_AXI_WVALID <- 0x1
+STEP 1 -> 10
+  EXPECT AXI4NetworkInterface.io_AXI_WREADY -> 0x0 == 0x0 PASS
+  POKE AXI4NetworkInterface.io_AXI_AWADDR <- 0x1000000
+  POKE AXI4NetworkInterface.io_AXI_AWID <- 0x2
+  POKE AXI4NetworkInterface.io_AXI_AWLEN <- 0x0
+  POKE AXI4NetworkInterface.io_AXI_AWVALID <- 0x1
+  EXPECT AXI4NetworkInterface.io_out_flitValid -> 0x0 == 0x0 PASS
+STEP 1 -> 11
+  EXPECT AXI4NetworkInterface.io_AXI_AWREADY -> 0x1 == 0x1 PASS
+  EXPECT AXI4NetworkInterface.io_AXI_WREADY -> 0x0 == 0x0 PASS
+  EXPECT AXI4NetworkInterface.io_out_flitValid -> 0x1 == 0x1 PASS
+  EXPECT AXI4NetworkInterface.io_out_flit_x -> 0x20441 == 0x20441 PASS
+STEP 1 -> 12
+  POKE AXI4NetworkInterface.io_AXI_AWVALID <- 0x0
+  EXPECT AXI4NetworkInterface.io_AXI_WREADY -> 0x1 == 0x1 PASS
+  EXPECT AXI4NetworkInterface.io_out_flitValid -> 0x1 == 0x1 PASS
+  EXPECT AXI4NetworkInterface.io_out_flit_x -> 0x14400000014 == 0x14400000014 PASS
+STEP 1 -> 13
+  POKE AXI4NetworkInterface.io_AXI_WVALID <- 0x0
+  POKE AXI4NetworkInterface.io_AXI_BREADY <- 0x1
+  EXPECT AXI4NetworkInterface.io_AXI_BVALID -> 0x1 == 0x1 PASS
+  EXPECT AXI4NetworkInterface.io_AXI_BID -> 0x2 == 0x2 PASS
+  EXPECT AXI4NetworkInterface.io_out_flitValid -> 0x0 == 0x0 PASS
+STEP 1 -> 14
+  EXPECT AXI4NetworkInterface.io_AXI_BRESP -> 0x0 == 0x0 PASS
+  POKE AXI4NetworkInterface.io_out_credit_grant <- 0x1
+STEP 2 -> 16
+  POKE AXI4NetworkInterface.io_out_credit_grant <- 0x0
+STEP 2 -> 18
+**** Write Packet with multiple data bursts ****
+  POKE AXI4NetworkInterface.io_AXI_AWADDR <- 0x10000
+  POKE AXI4NetworkInterface.io_AXI_AWID <- 0x3
+  POKE AXI4NetworkInterface.io_AXI_AWLEN <- 0x3
+  POKE AXI4NetworkInterface.io_AXI_AWVALID <- 0x1
+  EXPECT AXI4NetworkInterface.io_out_flitValid -> 0x0 == 0x0 PASS
+STEP 1 -> 19
+  POKE AXI4NetworkInterface.io_AXI_WDATA <- 0x14
+  POKE AXI4NetworkInterface.io_AXI_WVALID <- 0x1
+  EXPECT AXI4NetworkInterface.io_AXI_AWREADY -> 0x1 == 0x1 PASS
+  EXPECT AXI4NetworkInterface.io_AXI_WREADY -> 0x0 == 0x0 PASS
+  EXPECT AXI4NetworkInterface.io_out_flitValid -> 0x1 == 0x1 PASS
+  EXPECT AXI4NetworkInterface.io_out_flit_x -> 0x31011 == 0x31011 PASS
+STEP 1 -> 20
+  POKE AXI4NetworkInterface.io_AXI_AWVALID <- 0x0
+  EXPECT AXI4NetworkInterface.io_AXI_AWREADY -> 0x0 == 0x0 PASS
+  EXPECT AXI4NetworkInterface.io_AXI_WREADY -> 0x1 == 0x1 PASS
+  EXPECT AXI4NetworkInterface.io_out_flitValid -> 0x1 == 0x1 PASS
+  EXPECT AXI4NetworkInterface.io_out_flit_x -> 0x18600000028 == 0x18600000028 PASS
+STEP 1 -> 21
+  POKE AXI4NetworkInterface.io_AXI_WVALID <- 0x0
+  EXPECT AXI4NetworkInterface.io_out_flitValid -> 0x0 == 0x0 PASS
+STEP 1 -> 22
+  POKE AXI4NetworkInterface.io_AXI_WDATA <- 0x15
+  POKE AXI4NetworkInterface.io_AXI_WVALID <- 0x1
+  EXPECT AXI4NetworkInterface.io_out_flitValid -> 0x1 == 0x1 PASS
+  EXPECT AXI4NetworkInterface.io_out_flit_x -> 0x1860000002a == 0x1860000002a PASS
+STEP 1 -> 23
+  EXPECT AXI4NetworkInterface.io_AXI_WREADY -> 0x1 == 0x1 PASS
+  POKE AXI4NetworkInterface.io_AXI_WDATA <- 0x16
+  EXPECT AXI4NetworkInterface.io_out_flitValid -> 0x1 == 0x1 PASS
+  EXPECT AXI4NetworkInterface.io_out_flit_x -> 0x1860000002c == 0x1860000002c PASS
+STEP 1 -> 24
+  EXPECT AXI4NetworkInterface.io_AXI_WREADY -> 0x1 == 0x1 PASS
+  POKE AXI4NetworkInterface.io_AXI_WDATA <- 0x17
+  EXPECT AXI4NetworkInterface.io_out_flitValid -> 0x1 == 0x1 PASS
+  EXPECT AXI4NetworkInterface.io_out_flit_x -> 0x1c60000002e == 0x1c60000002e PASS
+STEP 1 -> 25
+  POKE AXI4NetworkInterface.io_AXI_WVALID <- 0x0
+  EXPECT AXI4NetworkInterface.io_AXI_WREADY -> 0x0 == 0x0 PASS
+  POKE AXI4NetworkInterface.io_AXI_BREADY <- 0x1
+  EXPECT AXI4NetworkInterface.io_AXI_BVALID -> 0x1 == 0x1 PASS
+  EXPECT AXI4NetworkInterface.io_AXI_BID -> 0x3 == 0x3 PASS
+  EXPECT AXI4NetworkInterface.io_out_flitValid -> 0x0 == 0x0 PASS
+STEP 1 -> 26
+  EXPECT AXI4NetworkInterface.io_AXI_BRESP -> 0x0 == 0x0 PASS
+  POKE AXI4NetworkInterface.io_out_credit_grant <- 0x1
+STEP 5 -> 31
+  POKE AXI4NetworkInterface.io_out_credit_grant <- 0x0
+STEP 2 -> 33
+RAN 33 CYCLES PASSED
